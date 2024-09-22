@@ -1,0 +1,91 @@
+source("/Users/arley/Desktop/Arley/Rprojects/bootGMYC/bootGMYCbis.r")
+myres<-bootGMYC(mytrees,ntrees=10,nreps=100)
+
+plot.phylo(mytrees[[2]],use.edge.length=F)
+nodelabels(text=1:mytrees[[2]]$Nnode,node=1:mytrees[[2]]$Nnode+Ntip(mytrees[[2]]))
+
+plot.phylo(myres[[2]]$tree[[1]],use.edge.length=F)
+nodelabels(text=1:myres[[2]]$tree[[1]]$Nnode,node=1:myres[[2]]$tree[[1]]$Nnode+Ntip(myres[[2]]$tree[[1]]))
+
+# selecting trees without errors in gmyc that generated all expected nreps
+
+newlist<-list()
+for (i in 1:length(myres)){
+	if (print(length(myres[[i]]$par[,1]))==nreps){
+		newlist[[length(newlist)+1]]<-myres[[i]]
+		}
+	}
+
+#probmat
+
+numtip <- length(myres[[1]]$tree$tip.label)
+probmat<-matrix(data=( rep(0, times=(numtip*numtip))), ncol=numtip, nrow=numtip)
+rownames(probmat)<-myres[[1]]$tree$tip.label
+colnames(probmat)<-myres[[1]]$tree$tip.label
+ntrees<-length(myres)
+totalsamp<-ntrees*length(myres[[1]]$par[,1])
+
+for (q in 1:ntrees){
+		for (j in 1:length(myres[[q]]$par[,3])){
+			assignlists<-myres[[q]]$reassignment[[j]]
+			assignlists<-assignlists[order(assignlists[,1]),]
+			levs<-levels(as.factor(assignlists[,1]))
+			for (i in 1:length(levs)){
+				probmat[as.character(assignlists[which(assignlists[,1]==levs[i]),2]),as.character(assignlists[which(assignlists[,1]==levs[i]),2])]<-probmat[as.character(assignlists[which(assignlists[,1]==levs[i]),2]),as.character(assignlists[which(assignlists[,1]==levs[i]),2])]+1
+				}
+			}
+		}
+
+probmat<-probmat/totalsamp
+plot.bgmycprobmat(probmat,mytrees[[1]])
+
+# plotting number of species across all trees and replicates
+
+spnumber<-c()
+for (i in 1:length(myres)){spnumber<-c(spnumber,myres[[i]]$par[,3])}
+plot(hist(spnumber))
+
+# confidence interval of number of species based on the median
+confidence_interval <- function(vector, interval) {
+  # Standard deviation of sample
+  vec_sd <- sd(vector)
+  # Sample size
+  n <- length(vector)
+  # Mean of sample
+  vec_mean <- median(vector)
+  # Error according to t distribution
+  error <- qt((interval + 1)/2, df = n - 1) * vec_sd / sqrt(n)
+  # Confidence interval as a vector
+  result <- c("lower" = vec_mean - error, "upper" = vec_mean + error)
+  return(result)
+}
+
+confidence_interval(spnumber,0.95)
+
+
+#probmat with selected replicates equal to a given number of species (for example, numsp=6)
+
+numsp <- 6
+numtip <- length(myres[[1]]$tree$tip.label)
+probmat<-matrix(data=( rep(0, times=(numtip*numtip))), ncol=numtip, nrow=numtip)
+rownames(probmat)<-myres[[1]]$tree$tip.label
+colnames(probmat)<-myres[[1]]$tree$tip.label
+ntrees<-length(myres)
+
+totalreps<-0
+for (q in 1:ntrees){
+		for (j in 1:length(myres[[q]]$par[,3])){
+			if (myres[[q]]$par[j,3]==numsp){
+				totalreps<-totalreps+1
+				assignlists<-myres[[q]]$reassignment[[j]]
+				assignlists<-assignlists[order(assignlists[,1]),]
+				levs<-levels(as.factor(assignlists[,1]))
+				for (i in 1:length(levs)){
+					probmat[as.character(assignlists[which(assignlists[,1]==levs[i]),2]),as.character(assignlists[which(assignlists[,1]==levs[i]),2])]<-probmat[as.character(assignlists[which(assignlists[,1]==levs[i]),2]),as.character(assignlists[which(assignlists[,1]==levs[i]),2])]+1
+					}
+				}	
+			}
+		}
+
+probmat<-probmat/totalreps
+plot.bgmycprobmat(probmat,mytrees[[1]])

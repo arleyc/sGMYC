@@ -1,4 +1,4 @@
-Package: bootGMYC
+Package: sGMYC
 Type: Package
 Title: GMYC analysis with subsampling
 Version: 0.01
@@ -8,7 +8,7 @@ Maintainer: Arley Camargo <arley.camargo@gmail.com>
 Depends: R (>= 3.0.0), knitr
 Imports: ape (>= 3.1-4)
 Suggests: 
-Description: GMYC analysis with subsampling of sequences per species and number of loci
+Description: R package to run GMYC analysis with subsamples of sequences obtained from within the species delimited using all sequences.
 License: MIT + file LICENSE
 OS_type: unix
 NeedsCompilation: yes
@@ -18,4 +18,5 @@ Packaged:
 Repository: 
 Date/Publication:
 VignetteBuilder: knitr
-RoxygenNote: 7.2.2
+RoxygenNote: 7.3.2
+Encoding: UTF-8
