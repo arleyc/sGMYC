@@ -1,13 +1,17 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# bootGMYC
+# sGMYC
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The functions in bootGMYC allow to subsample sequences per species in
-order to run bGMYC analysis for species delimitation.
+The functions in sGMYC allow to subsample sequences within species to
+run a single-threshold GMYC analysis (citation) with subsamples of
+sequences obtained from within the species delimited using all
+sequences. It also plots a heatmap of the probabilities of
+conspecificity among samples based on funtions of the bGMYC package
+(citation).
 
 ## Installation
 
@@ -16,21 +20,23 @@ You can install the development version from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("arleyc/bootGMYC")
+devtools::install_github("arleyc/sGMYC")
 ```
 
 ## Example
 
 ``` r
-library(bootGMYC)
+library(sGMYC)
 #> Loading required package: knitr
 #Species delimitation...
 ```
 
 ## References
 
-bGMYC
+GMYC bGMYC
 
 ## Citation
 
-Magalhaes, R., and Camargo, A. in review.
+de Magalhães RF, Santos MTT & Camargo A. 2024. Subsampling GMYC (sGMYC):
+a new algorithmic implementation of the generalized mixed
+Yule-coalescent model.
