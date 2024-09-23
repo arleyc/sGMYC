@@ -5,8 +5,8 @@ Version: 0.01
 Date: 2024-02-01
 Author: Arley Camargo
 Maintainer: Arley Camargo <arley.camargo@gmail.com>
-Depends: R (>= 3.0.0), knitr
-Imports: ape (>= 3.1-4)
+Depends: R
+Imports: ape, knitr, doParallel, phytools, splits, foreach
 Suggests: 
 Description: R package to run GMYC analysis with subsamples of sequences obtained from within the species delimited using all sequences.
 License: MIT + file LICENSE

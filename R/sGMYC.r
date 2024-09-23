@@ -18,6 +18,7 @@ requireNamespace("splits", quietly = TRUE)
 if (ncores > 1) {
   requireNamespace("parallel", quietly = TRUE)
   requireNamespace("doParallel", quietly = TRUE)
+  requireNamespace("foreach", quietly = TRUE)
   mycores<-parallel::detectCores()-1
   if (ncores < mycores) {
     mycores<-ncores}
@@ -73,7 +74,7 @@ if (subsamp==1) {
 	tryCatch(
      expr = {newassign<-splits::spec.list(splits::gmyc(bootree))
              bootgmyc<-c(bootgmyc, max(newassign[,1]))
-             #bootcomp<-rbind(bootcomp, c(max(assignments[,1]), min(bootgmyc), max(bootgmyc), mean(bootgmyc), sd(bootgmyc)))
+             #bootcomp<-rbind(bootcomp, c(max(assignments[,1]), min(bootgmyc), max(bootgmyc), mean(bootgmyc), stats::sd(bootgmyc)))
              results[[j]]<-c(max(assignments[,1]), min(bootgmyc), max(bootgmyc), mean(bootgmyc))},
 	 		 error = function(e) {print("There was an error message.")})
 
@@ -98,7 +99,7 @@ print(results[[j]])
  mytree<-phy[[j]]
 
  # force ultrametric tree
-  if (is.ultrametric(mytree)==FALSE) {
+  if (ape::is.ultrametric(mytree)==FALSE) {
      mytree<-phytools::force.ultrametric(mytree, method="extend")}
 
  #do gmyc
@@ -129,7 +130,7 @@ print(results[[j]])
 	tryCatch(
      expr = {newassign<-splits::spec.list(splits::gmyc(bootree))
              bootgmyc<-c(bootgmyc, max(newassign[,1]))
-             results[[j]]<-c(max(assignments[,1]), min(bootgmyc), max(bootgmyc), mean(bootgmyc), sd(bootgmyc))},
+             results[[j]]<-c(max(assignments[,1]), min(bootgmyc), max(bootgmyc), mean(bootgmyc), stats::sd(bootgmyc))},
 	 error = function(e) {print("There was an error message.")})
  }
 
@@ -149,9 +150,9 @@ print(results[[j]])
 } # close else
 } # close dopar
 
-stopCluster(myCluster)
+parallel::stopCluster(myCluster)
 print(results)
-write.table(as.data.frame(results), file=paste("results_",subsamp,"tips_",mycores, "core(s)", sep=""))
+utils::write.table(as.data.frame(results), file=paste("results_",subsamp,"tips_",mycores, "core(s)", sep=""))
 
 } # close if parallel
 
@@ -176,7 +177,7 @@ for (j in 1:ntrees) {
  mytree<-phy[[j]]
 
  # force ultrametric tree
-  if (is.ultrametric(mytree)==FALSE) {
+  if (ape::is.ultrametric(mytree)==FALSE) {
      mytree<-phytools::force.ultrametric(mytree, method="extend")}
 
  #do gmyc
@@ -204,7 +205,7 @@ for (j in 1:ntrees) {
 	tryCatch(
      expr = {newassign<-splits::spec.list(splits::gmyc(bootree))
              bootgmyc<-c(bootgmyc, max(newassign[,1]))
-             bootcomp<-rbind(bootcomp, c(max(assignments[,1]), min(bootgmyc), max(bootgmyc), mean(bootgmyc), sd(bootgmyc), nreps, subsamp))},
+             bootcomp<-rbind(bootcomp, c(max(assignments[,1]), min(bootgmyc), max(bootgmyc), mean(bootgmyc), stats::sd(bootgmyc), nreps, subsamp))},
 	 error = function(e) {print("There was an error message.")})
 
   },
@@ -230,7 +231,7 @@ for (j in 1:ntrees) {
  mytree<-phy[[j]]
 
  # force ultrametric tree
-   if (is.ultrametric(mytree)==FALSE) {
+   if (ape::is.ultrametric(mytree)==FALSE) {
      mytree<-phytools::force.ultrametric(mytree, method="extend")}
 
  #do gmyc
@@ -265,7 +266,7 @@ for (j in 1:ntrees) {
 	 error = function(e) {print("There was an error message.")})
  }
 
-bootcomp<-rbind(bootcomp, c(max(assignments[,1]), min(bootgmyc), max(bootgmyc), mean(bootgmyc), sd(bootgmyc), nreps, subsamp))
+bootcomp<-rbind(bootcomp, c(max(assignments[,1]), min(bootgmyc), max(bootgmyc), mean(bootgmyc), stats::sd(bootgmyc), nreps, subsamp))
 boottable[[j]]<-table(bootgmyc)
 
 },
