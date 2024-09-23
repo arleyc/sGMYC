@@ -6,17 +6,10 @@ Date: 2024-02-01
 Author: Arley Camargo
 Maintainer: Arley Camargo <arley.camargo@gmail.com>
 Depends: R
-Imports: ape, knitr, doParallel, phytools, splits, foreach
-Suggests: 
+Imports: ape, doParallel, phytools, splits, foreach
 Description: R package to run GMYC analysis with subsamples of sequences obtained from within the species delimited using all sequences.
 License: MIT + file LICENSE
 OS_type: unix
 NeedsCompilation: yes
-SystemRequirements: 
-Additional_repositories: 
-Packaged: 
-Repository: 
-Date/Publication:
-VignetteBuilder: knitr
 RoxygenNote: 7.3.2
 Encoding: UTF-8

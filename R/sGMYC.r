@@ -25,7 +25,7 @@ if (ncores > 1) {
   myCluster<-parallel::makeCluster(mycores)
   doParallel::registerDoParallel(myCluster)
   results <- list("fullGMYC","min_bootGMYC","max_bootGMYC","mean_bootGMYC")
-  results<-foreach (j = 1:ntrees, .combine=rbind) %dopar% {
+  results<-foreach::foreach (j = 1:ntrees, .combine=rbind) %dopar% {
 
 # from phylo to multyphylo
 if (class(phy)=="phylo") {
