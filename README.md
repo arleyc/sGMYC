@@ -33,10 +33,13 @@ library(sGMYC)
 
 ## References
 
-GMYC bGMYC
+GMYC
+
+bGMYC
 
 ## Citation
 
 de Magalhães RF, Santos MTT & Camargo A. 2024. Subsampling GMYC (sGMYC):
 a new algorithmic implementation of the generalized mixed
-Yule-coalescent model.
+Yule-coalescent model. I Congresso Brasileiro de Biologia Evolutiva,
+Curitiba, Brasil.
