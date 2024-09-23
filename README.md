@@ -6,12 +6,13 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The functions in sGMYC allow to subsample sequences within species to
-run a single-threshold GMYC analysis (Pons et al.  2006, Fujisawa &
-Barraclough 2013) with subsamples of sequences obtained from within the
-species delimited using all sequences. It also plots a heatmap of
-conspecificity probabilities among samples based on functions of the
-bGMYC package (Reid & Carstens 2012).
+sGMYC runs a single-threshold GMYC analysis (Pons et al. 2006) using the
+splits package (Fujisawa & Barraclough 2013) with subsamples of
+sequences obtained from within the species delimited using all
+sequences. It also plots a heatmap of conspecificity probabilities among
+samples based on functions of the bGMYC package (Reid & Carstens 2012).
+When more than one tree are provided, sGMYC can implement the analysis
+with multiple cores using the parallel and doParallel packages.
 
 ## Installation
 
@@ -28,7 +29,9 @@ devtools::install_github("arleyc/sGMYC")
 ``` r
 library(sGMYC)
 #> Loading required package: knitr
-#Species delimitation with subsampling of two sequences per species
+#Species delimitation with subsampling using a single tree
+
+#Species delimitation with subsampling using multiple trees and computer cores
 
 #Plotting heatmap of conspecificity probabilities
 ```
