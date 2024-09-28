@@ -36,7 +36,9 @@ devtools::install_github("arleyc/sGMYC")
 
 ```{r example1}
 library(sGMYC)
+
 data("hypotree")
+
 sGMYC(hypotree,nreps=10)
 
 #Plotting heatmap of conspecificity probabilities
