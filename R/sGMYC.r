@@ -52,7 +52,7 @@ if (subsamp==1) {
     mytree<-phytools::force.ultrametric(mytree, method="extend")}
 
  #do gmyc
- fullgmyc<-splits::gmyc(mytree)
+ fullgmyc<-splits::gmyc(mytree, quiet=TRUE)
 
  tryCatch(
  expr = {
@@ -74,7 +74,7 @@ if (subsamp==1) {
 	#do gmyc
 
 	tryCatch(
-     expr = {newassign<-splits::spec.list(splits::gmyc(bootree))
+     expr = {newassign<-splits::spec.list(splits::gmyc(bootree, quiet=TRUE))
              bootgmyc<-c(bootgmyc, max(newassign[,1]))
              #bootcomp<-rbind(bootcomp, c(max(assignments[,1]), min(bootgmyc), max(bootgmyc), mean(bootgmyc), stats::sd(bootgmyc)))
              results[[j]]<-c(max(assignments[,1]), min(bootgmyc), max(bootgmyc), mean(bootgmyc))},
@@ -105,7 +105,7 @@ print(results[[j]])
      mytree<-phytools::force.ultrametric(mytree, method="extend")}
 
  #do gmyc
- fullgmyc<-splits::gmyc(mytree)
+ fullgmyc<-splits::gmyc(mytree, quiet=TRUE)
 
  tryCatch(
  expr = {
@@ -130,7 +130,7 @@ print(results[[j]])
 
 	#do gmyc
 	tryCatch(
-     expr = {newassign<-splits::spec.list(splits::gmyc(bootree))
+     expr = {newassign<-splits::spec.list(splits::gmyc(bootree, quiet=TRUE))
              bootgmyc<-c(bootgmyc, max(newassign[,1]))
              results[[j]]<-c(max(assignments[,1]), min(bootgmyc), max(bootgmyc), mean(bootgmyc), stats::sd(bootgmyc))},
 	 error = function(e) {print("There was an error message.")})
@@ -183,7 +183,7 @@ for (j in 1:ntrees) {
      mytree<-phytools::force.ultrametric(mytree, method="extend")}
 
  #do gmyc
- fullgmyc<-splits::gmyc(mytree)
+ fullgmyc<-splits::gmyc(mytree, quiet=TRUE)
 
  tryCatch(
  expr = {
@@ -205,7 +205,7 @@ for (j in 1:ntrees) {
 	#do gmyc
 
 	tryCatch(
-     expr = {newassign<-splits::spec.list(splits::gmyc(bootree))
+     expr = {newassign<-splits::spec.list(splits::gmyc(bootree, quiet=TRUE))
              bootgmyc<-c(bootgmyc, max(newassign[,1]))
              bootcomp<-rbind(bootcomp, c(max(assignments[,1]), min(bootgmyc), max(bootgmyc), mean(bootgmyc), stats::sd(bootgmyc), nreps, subsamp))},
 	 error = function(e) {print("There was an error message.")})
@@ -237,7 +237,7 @@ for (j in 1:ntrees) {
      mytree<-phytools::force.ultrametric(mytree, method="extend")}
 
  #do gmyc
- fullgmyc<-splits::gmyc(mytree)
+ fullgmyc<-splits::gmyc(mytree, quiet=TRUE)
 
  tryCatch(
  expr = {
@@ -263,7 +263,7 @@ for (j in 1:ntrees) {
 
 	#do gmyc
 	tryCatch(
-     expr = {newassign<-splits::spec.list(splits::gmyc(bootree))
+     expr = {newassign<-splits::spec.list(splits::gmyc(bootree, quiet=TRUE))
              bootgmyc<-c(bootgmyc, max(newassign[,1]))},
 	 error = function(e) {print("There was an error message.")})
  }
