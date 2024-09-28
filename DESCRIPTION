@@ -13,4 +13,5 @@ License: MIT + file LICENSE
 OS_type: unix
 NeedsCompilation: yes
 RoxygenNote: 7.3.2
+Roxygen: list(markdown = TRUE)
 Encoding: UTF-8

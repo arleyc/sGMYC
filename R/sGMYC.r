@@ -1,3 +1,5 @@
+#' @export
+
 # phy: single tree or sample of trees
 # ntrees: number of trees to analyze from phy (1 to ntrees) (default:1)
 # subsamp: number of tips to subsample from each delimited species in full analysis (default: 2)
