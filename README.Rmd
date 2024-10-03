@@ -32,26 +32,39 @@ You can install the development version from [GitHub](https://github.com/) with:
 # install.packages("devtools")
 devtools::install_github("arleyc/sGMYC")
 ```
-## Example 1: subsampling from one tree
+## Example: full GMYC analysis vs. subsampling with sGMYC
 
+1) Full analysis with bGMYC
 ```{r example1}
 library(sGMYC)
 
 data("hypotree")
 
+library(bGMYC)
+
+fullgmyc<-bgmyc.singlephy(hypotree, mcmc=10000, burnin=2500, thinning=50)
+
+fullgmyc.probmat<-bGMYC::spec.probmat(fullgmyc)
+
+plot.bgmycprobmat(fullgmyc.probmat,hypotree)
+
+```
+
+2) Subsampling with sGMYC
+```{r example2}
+
 myres<-sGMYC(hypotree)
 
 #Calculate matrix of conspecificity probabilities
 
-myprobmat<-spec.probmat(myres)
+myprobmat<-sGMYC::spec.probmat(myres)
 
 #Plot heatmap of conspecificity probabilities
 
-library(bGMYC)
 plot.bgmycprobmat(myprobmat,hypotree)
 ```
 
-```{r example2}
+```{r example3}
 #Species delimitation with subsampling using multiple trees and computer cores
 
 #Plotting heatmap of conspecificity probabilities
