@@ -32,29 +32,48 @@ You can install the development version from [GitHub](https://github.com/) with:
 # install.packages("devtools")
 devtools::install_github("arleyc/sGMYC")
 ```
-## Example: full GMYC analysis vs. subsampling with sGMYC
+## Example: full analysis with bGMYC vs. subsampling with sGMYC
 
-1) Full analysis with bGMYC
+1) First, let's load an example dataset (hypotree) included with the sGMYC package:
+
 ```{r example1}
 library(sGMYC)
 
 data("hypotree")
 
-library(bGMYC)
-
-fullgmyc<-bgmyc.singlephy(hypotree, mcmc=10000, burnin=2500, thinning=50)
-
-fullgmyc.probmat<-bGMYC::spec.probmat(fullgmyc)
-
-plot.bgmycprobmat(fullgmyc.probmat,hypotree)
-
+ape::print.phylo(hypotree)
 ```
 
-2) Subsampling with sGMYC
+2) Next, we use bGMYC to implement a full Bayesian GMYC analysis:
+
 ```{r example2}
+library(bGMYC)
 
-myres<-sGMYC(hypotree)
+fullgmyc<-bgmyc.singlephy(hypotree, mcmc=10000, burnin=1000, thinning=100)
 
+#Calculate matrix of conspecificity probabilities
+fullgmyc.probmat<-bGMYC::spec.probmat(fullgmyc)
+
+# Calculate a point estimate of the number of species
+length(bgmyc.point(fullgmyc.probmat,0.05))
+```
+
+3) Based on cutoff value of PP=0.05, bGMYC estimates 8 species; next, we can use a heatmap plot to display the probabilities of conspecificity:
+
+``` {r example3}
+#Plot heatmap of conspecificity probabilities
+plot.bgmycprobmat(fullgmyc.probmat,hypotree)
+```
+
+4) Now, let's do subsampling with sGMYC using two samples from each of the species originally estimated with the splits package:
+
+```{r example4}
+myres<-sGMYC(hypotree,subsamp=2,nreps=100)
+```
+
+5) sGMYC estimates 2 species across all 100 subsampling replicates. We can also plot a heatmap that summarizes the variation in species limits based on subsampling:
+
+```{r example5}
 #Calculate matrix of conspecificity probabilities
 
 myprobmat<-sGMYC::spec.probmat(myres)
@@ -64,7 +83,7 @@ myprobmat<-sGMYC::spec.probmat(myres)
 plot.bgmycprobmat(myprobmat,hypotree)
 ```
 
-```{r example3}
+```{r example6}
 #Species delimitation with subsampling using multiple trees and computer cores
 
 #Plotting heatmap of conspecificity probabilities

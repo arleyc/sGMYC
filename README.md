@@ -24,15 +24,29 @@ You can install the development version from
 devtools::install_github("arleyc/sGMYC")
 ```
 
-## Example: full GMYC analysis vs. subsampling with sGMYC
+## Example: full analysis with bGMYC vs. subsampling with sGMYC
 
-1)  Full analysis with bGMYC
+1)  First, let’s load an example dataset (hypotree) included with the
+    sGMYC package:
 
 ``` r
 library(sGMYC)
 
 data("hypotree")
 
+ape::print.phylo(hypotree)
+#> 
+#> Phylogenetic tree with 58 tips and 57 internal nodes.
+#> 
+#> Tip labels:
+#>   11281H_Colinas, 11291H_Colinas, 12184H_12185Hraba, 12187_12186_12243Hraba, 164H_Silvania, 167H_19222_Silvania_Uberlandia, ...
+#> 
+#> Rooted; includes branch lengths.
+```
+
+2)  Next, we use bGMYC to implement a full Bayesian GMYC analysis:
+
+``` r
 library(bGMYC)
 #> Loading required package: ape
 #> 
@@ -41,7 +55,7 @@ library(bGMYC)
 #> 
 #>     spec.probmat
 
-fullgmyc<-bgmyc.singlephy(hypotree, mcmc=10000, burnin=2500, thinning=50)
+fullgmyc<-bgmyc.singlephy(hypotree, mcmc=10000, burnin=1000, thinning=100)
 #> You are running bGMYC on a single phylogenetic tree.
 #> This tree contains  58  tips.
 #> The Yule process rate change parameter has a uniform prior ranging from  0  to  2 .
@@ -50,7 +64,7 @@ fullgmyc<-bgmyc.singlephy(hypotree, mcmc=10000, burnin=2500, thinning=50)
 #> The MCMC will start with the Yule parameter set to  1 .
 #> The MCMC will start with the coalescent parameter set to  0.5 .
 #> The MCMC will start with the threshold parameter set to  50 . If this number is greater than the number of tips in your tree, an error will result.
-#> Given your settings for mcmc, burnin and thinning, your analysis will result in  150  samples being retained.
+#> Given your settings for mcmc, burnin and thinning, your analysis will result in  90  samples being retained.
 #> !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #> is.binary.tree() is deprecated; using is.binary() instead.
 #> 
@@ -68,20 +82,32 @@ fullgmyc<-bgmyc.singlephy(hypotree, mcmc=10000, burnin=2500, thinning=50)
 #> 100 % 
 #> acceptance rates 
 #>  py pc th 
-#>  0.8145 0.762 0.3514
+#>  0.8077 0.7605 0.3469
 
+#Calculate matrix of conspecificity probabilities
 fullgmyc.probmat<-bGMYC::spec.probmat(fullgmyc)
 
+# Calculate a point estimate of the number of species
+length(bgmyc.point(fullgmyc.probmat,0.05))
+#> [1] 8
+```
+
+3)  Based on cutoff value of PP=0.05, bGMYC estimates 8 species; next,
+    we can use a heatmap plot to display the probabilities of
+    conspecificity:
+
+``` r
+#Plot heatmap of conspecificity probabilities
 plot.bgmycprobmat(fullgmyc.probmat,hypotree)
 ```
 
-<img src="man/figures/README-example1-1.png" width="100%" />
+<img src="man/figures/README-example3-1.png" width="100%" />
 
-2)  Subsampling with sGMYC
+4)  Now, let’s do subsampling with sGMYC using two samples from each of
+    the species originally estimated with the splits package:
 
 ``` r
-
-myres<-sGMYC(hypotree)
+myres<-sGMYC(hypotree,subsamp=2,nreps=100)
 #> Subsampling of tree 1, Done!
 #> 
 #>  Number of species in full analysis vs. after subsampling 
@@ -92,7 +118,13 @@ myres<-sGMYC(hypotree)
 #> $`Tree 1`
 #>   #species #reps
 #> 1        2   100
+```
 
+5)  sGMYC estimates 2 species across all 100 subsampling replicates. We
+    can also plot a heatmap that summarizes the variation in species
+    limits based on subsampling:
+
+``` r
 #Calculate matrix of conspecificity probabilities
 
 myprobmat<-sGMYC::spec.probmat(myres)
@@ -102,7 +134,7 @@ myprobmat<-sGMYC::spec.probmat(myres)
 plot.bgmycprobmat(myprobmat,hypotree)
 ```
 
-<img src="man/figures/README-example2-1.png" width="100%" />
+<img src="man/figures/README-example5-1.png" width="100%" />
 
 ``` r
 #Species delimitation with subsampling using multiple trees and computer cores
