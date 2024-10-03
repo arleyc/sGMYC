@@ -39,10 +39,16 @@ library(sGMYC)
 
 data("hypotree")
 
-sGMYC(hypotree,nreps=10)
+myres<-sGMYC(hypotree)
 
-#Plotting heatmap of conspecificity probabilities
+#Calculate matrix of conspecificity probabilities
 
+myprobmat<-spec.probmat(myres)
+
+#Plot heatmap of conspecificity probabilities
+
+library(bGMYC)
+plot.bgmycprobmat(myprobmat,hypotree)
 ```
 
 ```{r example2}

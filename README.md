@@ -31,23 +31,35 @@ library(sGMYC)
 
 data("hypotree")
 
-sGMYC(hypotree,nreps=10)
-#> [1] 1
-#> [[1]]
-#> [[1]]$`Number of species (first row) and number of replicates (second row)`
-#> bootgmyc
-#>  3 
-#> 10 
+myres<-sGMYC(hypotree)
+#> Subsampling of tree 1, Done!
 #> 
+#>  Number of species in full analysis vs. after subsampling 
+#>        full_GMYC min_sGMYC max_sGMYC mean_sGMYC sd_sGMYC #reps #subsamp per sp
+#> Tree 1        12         2         2          2        0   100               2
 #> 
-#> [[2]]
-#>      fullGMYC min_bootGMYC max_bootGMYC mean_bootGMYC sd_bootGMYC reps
-#> [1,]       13            3            3             3           0   10
-#>      subsamples/sp
-#> [1,]             2
+#>  Number of species vs. number of subsampling replicates 
+#> $`Tree 1`
+#>   #species #reps
+#> 1        2   100
 
-#Plotting heatmap of conspecificity probabilities
+#Calculate matrix of conspecificity probabilities
+
+myprobmat<-spec.probmat(myres)
+
+#Plot heatmap of conspecificity probabilities
+
+library(bGMYC)
+#> Loading required package: ape
+#> 
+#> Attaching package: 'bGMYC'
+#> The following object is masked from 'package:sGMYC':
+#> 
+#>     spec.probmat
+plot.bgmycprobmat(myprobmat,hypotree)
 ```
+
+<img src="man/figures/README-example1-1.png" width="100%" />
 
 ``` r
 #Species delimitation with subsampling using multiple trees and computer cores
