@@ -9,7 +9,7 @@ Depends:
     R (>= 2.10)
 Imports: ape, doParallel, phytools, splits, foreach, stats, utils
 Description: R package to run GMYC analysis with subsamples of sequences obtained from within the species delimited using all sequences.
-License: GPL
+License: GPL (>= 3)
 OS_type: unix
 NeedsCompilation: yes
 RoxygenNote: 7.3.2
