@@ -82,14 +82,14 @@ fullgmyc<-bgmyc.singlephy(hypotree, mcmc=10000, burnin=1000, thinning=100)
 #> 100 % 
 #> acceptance rates 
 #>  py pc th 
-#>  0.8077 0.7605 0.3469
+#>  0.801 0.7573 0.3468
 
 #Calculate matrix of conspecificity probabilities
 fullgmyc.probmat<-bGMYC::spec.probmat(fullgmyc)
 
 # Calculate a point estimate of the number of species
 length(bgmyc.point(fullgmyc.probmat,0.05))
-#> [1] 8
+#> [1] 7
 ```
 
 3)  Based on cutoff value of PP=0.05, bGMYC estimates 8 species; next,
