@@ -2,4 +2,6 @@
 
 export(sGMYC)
 export(spec.probmat)
+importFrom(bGMYC,plot.bgmycprobmat)
 importFrom(foreach,"%dopar%")
+importFrom(methods,is)

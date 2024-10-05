@@ -7,7 +7,7 @@ Author: Arley Camargo
 Maintainer: Arley Camargo <arley.camargo@gmail.com>
 Depends: 
     R (>= 2.10)
-Imports: ape, doParallel, phytools, splits, foreach, stats, utils
+Imports: ape, doParallel, phytools, splits, foreach, stats, utils, methods, bGMYC
 Description: R package to run GMYC analysis with subsamples of sequences obtained from within the species delimited using all sequences.
 License: GPL (>= 3)
 OS_type: unix

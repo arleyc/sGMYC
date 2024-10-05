@@ -1,14 +1,30 @@
+#' sGMYC: GMYC analysis with subsampling
+
 #' @export
 #' @importFrom foreach %dopar%
+#' @importFrom methods is
+#' @importFrom bGMYC plot.bgmycprobmat
 
-# phy: single tree or sample of trees
-# ntrees: number of trees to analyze from phy (1 to ntrees) (default:1)
-# subsamp: number of tips to subsample from each delimited species in full analysis (default: 2)
-# nreps: number of subsampling replicates (default:100)
-# ncores: number of cores for parallel analysis (when analyzing multiple trees only) (default: 1)
-# sGMYC(phy = para, ntrees = 1, ncores = 1, nreps=200, subsamp=2)
+#' @param phy Single tree or sample of trees
+#' @param ntrees Number of trees to analyze from phy (1 to ntrees) (default:1)
+#' @param subsamp Number of tips to subsample from each delimited species in full analysis (default: 2)
+#' @param nreps Number of subsampling replicates (default:100)
+#' @param ncores Number of cores for parallel analysis (when analyzing multiple trees only) (default: 1)
 
-sGMYC <- function(phy, ntrees=1, subsamp=2, nreps=100, ncores=1, probmat=FALSE) {
+#' @return
+#' An object of class “list” with the following elements:
+
+#' @author
+#' Magalhães, Santos & Camargo
+
+#' @examples
+#' data(hypotree)
+#' myres<-sGMYC(hypotree, subsamp=2, nreps=100)
+#' myprobmat<-spec.probmat(myres)
+#' library(bGMYC)
+#' plot.bgmycprobmat(myprobmat,hypotree)
+
+sGMYC <- function(phy, ntrees=1, subsamp=2, nreps=100, ncores=1) {
 
 # check dependencies
 
@@ -29,9 +45,9 @@ if (ncores > 1) {
   doParallel::registerDoParallel(myCluster)
   results <- list()
   results<-foreach::foreach (j = 1:ntrees, .combine=rbind) %dopar% {
-  
+
 # from phylo to multyphylo
-if (class(phy)=="phylo") {
+if (is(phy,"phylo")==TRUE) {
   phy<-list(phy)
   class(phy)<-"multiPhylo"
 }
@@ -55,7 +71,7 @@ if (subsamp==1) {
 
  #do gmyc
  fullgmyc<-splits::gmyc(mytree, quiet=TRUE)
- 
+
  tryCatch(
  expr = {
  assignments<-splits::spec.list(fullgmyc)
@@ -67,13 +83,13 @@ if (subsamp==1) {
 	for (k in 1:max(assignments[,1])) {
 	 toretain<-c(toretain, as.numeric(sample(assignments[assignments[,1]==k,2],1)))
 	}
-	
+
 	#remove branches
 	todrop<-setdiff(c(1:length(mytree$tip.label)), toretain)
 	bootree<-ape::drop.tip(mytree, as.character(todrop))
 
 	#do gmyc
-	
+
 	tryCatch(
      expr = {newassign<-splits::spec.list(splits::gmyc(bootree, quiet=TRUE))
              bootgmyc<-c(bootgmyc, max(newassign[,1]))
@@ -106,7 +122,7 @@ print(results[[j]])
 
  #do gmyc
  fullgmyc<-splits::gmyc(mytree, quiet=TRUE)
- 
+
  tryCatch(
  expr = {
  assignments<-splits::spec.list(fullgmyc)
@@ -121,9 +137,9 @@ print(results[[j]])
 			toretain<-c(toretain, as.numeric(sample(assignments[assignments[,1]==k,2], subsamp, replace=FALSE)))
 			} else {
 			toretain<-c(toretain, as.numeric(assignments[assignments[,1]==k,][,2]))
-		}	
+		}
 	}
-	
+
 	#remove branches
 	todrop<-setdiff(c(1:length(mytree$tip.label)), toretain)
 	bootree<-ape::drop.tip(mytree, as.character(todrop))
@@ -161,7 +177,7 @@ utils::write.table(as.data.frame(results), file=paste("results_",subsamp,"tips_"
 else { # run with single core
 
 # from phylo to multyphylo
-if (class(phy)=="phylo") {
+if (is(phy,"phylo")==TRUE) {
   phy<-list(phy)
   class(phy)<-"multiPhylo"
 }
@@ -183,7 +199,7 @@ for (j in 1:ntrees) {
 
  #do gmyc
  fullgmyc<-splits::gmyc(mytree, quiet=TRUE)
- 
+
  tryCatch(
  expr = {
  assignments<-splits::spec.list(fullgmyc)
@@ -196,13 +212,13 @@ for (j in 1:ntrees) {
 	 toretain<-c(toretain, as.numeric(sample(assignments[assignments[,1]==k,2],1)))
 	 k=k+1
 	}
-	
+
 	#remove branches
 	todrop<-setdiff(c(1:length(mytree$tip.label)), toretain)
 	bootree<-ape::drop.tip(mytree, as.character(todrop))
 
 	#do gmyc
-	
+
 	tryCatch(
      expr = {newassign<-splits::spec.list(splits::gmyc(bootree, quiet=TRUE))
              bootgmyc<-c(bootgmyc, max(newassign[,1]))
@@ -229,7 +245,7 @@ bootcomp<-c()
 boottable<-list()
 
 for (j in 1:ntrees) {
- 
+
  mytree<-phy[[j]]
 
  # force ultrametric tree
@@ -238,7 +254,7 @@ for (j in 1:ntrees) {
 
  #do gmyc
  fullgmyc<-splits::gmyc(mytree, quiet=TRUE)
- 
+
  tryCatch(
  expr = {
  assignments<-splits::spec.list(fullgmyc)
@@ -258,9 +274,9 @@ for (j in 1:ntrees) {
 			toretain<-c(toretain, sample(assignments[assignments[,1]==k,2], subsamp, replace=FALSE))
 			} else {
 			toretain<-c(toretain, assignments[assignments[,1]==k,][,2])
-		}	
+		}
 	}
-	
+
 	#remove branches
 	todrop<-setdiff(mytree$tip.label, toretain)
 	bootree[[i]]<-ape::drop.tip(mytree, todrop)

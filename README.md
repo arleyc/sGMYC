@@ -82,7 +82,7 @@ fullgmyc<-bgmyc.singlephy(hypotree, mcmc=10000, burnin=1000, thinning=100)
 #> 100 % 
 #> acceptance rates 
 #>  py pc th 
-#>  0.7993 0.756 0.3462
+#>  0.8013 0.7425 0.3412
 
 #Calculate matrix of conspecificity probabilities
 fullgmyc.probmat<-bGMYC::spec.probmat(fullgmyc)
@@ -112,12 +112,13 @@ myres<-sGMYC(hypotree,subsamp=2,nreps=100)
 #> 
 #>  Number of species in full analysis vs. after subsampling 
 #>        full_GMYC min_sGMYC max_sGMYC mean_sGMYC sd_sGMYC #reps #subsamp per sp
-#> Tree 1        12         2         2          2        0   100               2
+#> Tree 1        12         2        11       2.09      0.9   100               2
 #> 
 #>  Number of species vs. number of subsampling replicates 
 #> $`Tree 1`
 #>   #species #reps
-#> 1        2   100
+#> 1        2    99
+#> 2       11     1
 ```
 
 5)  sGMYC estimates 2 species across all 100 subsampling replicates. We
@@ -164,4 +165,4 @@ doi: 10.1186/1471-2148-12-196.
 de Magalhães RF, Santos MTT & Camargo A. 2024. Subsampling GMYC (sGMYC):
 a new algorithmic implementation of the generalized mixed
 Yule-coalescent model. I Congresso Brasileiro de Biologia Evolutiva,
-Curitiba, Brasil.
+Curitiba, Brazil.
