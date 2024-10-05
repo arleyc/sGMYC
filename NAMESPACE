@@ -2,3 +2,4 @@
 
 export(sGMYC)
 export(spec.probmat)
+importFrom(foreach,"%dopar%")

@@ -1,4 +1,5 @@
 #' @export
+#' @importFrom foreach %dopar%
 
 # phy: single tree or sample of trees
 # ntrees: number of trees to analyze from phy (1 to ntrees) (default:1)
@@ -18,6 +19,7 @@ requireNamespace("splits", quietly = TRUE)
 # check dependency for parallel analysis
 
 if (ncores > 1) {
+  requireNamespace("foreach", quietly = TRUE)
   requireNamespace("parallel", quietly = TRUE)
   requireNamespace("doParallel", quietly = TRUE)
   mycores<-parallel::detectCores()-1

@@ -99,4 +99,4 @@ Reid NM & Carstens BC. 2012. Phylogenetic estimation error can decrease the accu
 
 ## Citation
 
-de Magalhães RF, Santos MTT & Camargo A. 2024. Subsampling GMYC (sGMYC): a new algorithmic implementation of the generalized mixed Yule-coalescent model. I Congresso Brasileiro de Biologia Evolutiva, Curitiba, Brasil.
+de Magalhães RF, Santos MTT & Camargo A. 2024. Subsampling GMYC (sGMYC): a new algorithmic implementation of the generalized mixed Yule-coalescent model. I Congresso Brasileiro de Biologia Evolutiva, Curitiba, Brazil.
