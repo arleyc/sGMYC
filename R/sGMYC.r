@@ -26,7 +26,7 @@ if (ncores > 1) {
   myCluster<-parallel::makeCluster(mycores)
   doParallel::registerDoParallel(myCluster)
   results <- list()
-  results<-foreach (j = 1:ntrees, .combine=rbind) %dopar% {
+  results<-foreach::foreach (j = 1:ntrees, .combine=rbind) %dopar% {
   
 # from phylo to multyphylo
 if (class(phy)=="phylo") {
@@ -150,9 +150,9 @@ print(results[[j]])
 } # close else
 } # close dopar
 
-stopCluster(myCluster)
+parallel::stopCluster(myCluster)
 print(results)
-write.table(as.data.frame(results), file=paste("results_",subsamp,"tips_",mycores, "core(s)", sep=""))
+utils::write.table(as.data.frame(results), file=paste("results_",subsamp,"tips_",mycores, "core(s)", sep=""))
 
 } # close if parallel
 
@@ -204,7 +204,7 @@ for (j in 1:ntrees) {
 	tryCatch(
      expr = {newassign<-splits::spec.list(splits::gmyc(bootree, quiet=TRUE))
              bootgmyc<-c(bootgmyc, max(newassign[,1]))
-             bootcomp<-rbind(bootcomp, c(max(assignments[,1]), min(bootgmyc), max(bootgmyc), mean(bootgmyc), sd(bootgmyc)))},
+             bootcomp<-rbind(bootcomp, c(max(assignments[,1]), min(bootgmyc), max(bootgmyc), mean(bootgmyc), stats::sd(bootgmyc)))},
 	 error = function(e) {print("There was an error message.")})
 
   },
@@ -214,7 +214,7 @@ print(j)
 
 }
 
-write.table(bootcomp, file="bootcomp_1tip")
+utils::write.table(bootcomp, file="bootcomp_1tip")
 
 } else { #sampling more than one tip per delimited entity
 
@@ -292,7 +292,7 @@ for (j in 1:ntrees) {
 #	}
  }
 
-bootcomp<-rbind(bootcomp, c(max(assignments[,1]), min(nsp), max(nsp), mean(nsp), sd(nsp), nreps, subsamp))
+bootcomp<-rbind(bootcomp, c(max(assignments[,1]), min(nsp), max(nsp), mean(nsp), stats::sd(nsp), nreps, subsamp))
 
 boottable[[j]]<-as.data.frame(table(nsp))
 colnames(boottable[[j]])<-c("#species","#reps")
