@@ -19,9 +19,21 @@ sGMYC(phy, ntrees = 1, subsamp = 2, nreps = 100, ncores = 1)
 }
 \value{
 An object of class “list” with the following elements:
+\describe{
+\item{par}{A table containing the number of species estimated in the full analysis and in the ananlyses with subsamples for each replicate.}
+\item{tree}{The tree used in the analysis.}
+\item{mrca}{The mrca list for each replicate.}
+\item{assignment}{A table containing the assignment of subsamples to species.}
+\item{reassignment}{A table containing the reassignment of all samples to species based on the assignment of subsamples.}
+}
 }
 \description{
-sGMYC: GMYC analysis with subsampling
+sGMYC runs a single-threshold GMYC analysis (Pons et al. 2006) using the splits
+package (Fujisawa & Barraclough 2013) with subsamples of sequences obtained from
+within the species delimited using all sequences. It also plots a heatmap of
+conspecificity probabilities among samples based on functions of the bGMYC package
+(Reid & Carstens 2012). When more than one tree are provided, sGMYC can implement
+the analysis with multiple cores using the parallel and doParallel packages.
 }
 \examples{
 data(hypotree)
@@ -30,6 +42,13 @@ myprobmat<-spec.probmat(myres)
 library(bGMYC)
 plot.bgmycprobmat(myprobmat,hypotree)
 }
+\references{
+\itemize{
+\item Fujisawa T & Barraclough TG. 2013. Delimiting species using single-locus data and the Generalized Mixed Yule Coalescent approach: A revised method and evaluation on simulated data sets. Systematic Biology 62:707–724, doi: 10.1093/sysbio/syt033
+\item Pons J, Barraclough TG, Gomez-Zurita J, Cardoso A, Duran DP, Hazell S, Kamoun S, Sumlin WD & Vogler AP. 2006. Sequence-based species delimitation for the DNA taxonomy of undescribed insects. Systematic Biology 55:595-609, doi: 10.1080/10635150600852011.
+\item Reid NM & Carstens BC. 2012. Phylogenetic estimation error can decrease the accuracy of species delimitation: a Bayesian implementation of the general mixed Yule-coalescent model. BMC Evolutionary Biology 12:196, doi: 10.1186/1471-2148-12-196.
+}
+}
 \author{
-Magalhães, Santos & Camargo
+Rafael F. Magalhães, MTT Santos & Arley Camargo
 }
