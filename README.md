@@ -44,18 +44,50 @@ ape::print.phylo(hypotree)
 #> Rooted; includes branch lengths.
 ```
 
-2)  Next, we use bGMYC to implement a full Bayesian GMYC analysis:
+2)  Run a single-threshold GMYC analysis with the splits package:
+
+``` r
+library(splits)
+#> Loading required package: ape
+#> Loading required package: MASS
+#> Loading required package: paran
+
+gmyc(hypotree, quiet=TRUE)->fullgmyc
+
+summary(fullgmyc)
+#> Result of GMYC species delimitation
+#> 
+#>  method: single
+#>  likelihood of null model:   422.263
+#>  maximum likelihood of GMYC model:   426.8078
+#>  likelihood ratio:   9.089746
+#>  result of LR test:  0.01062152*
+#> 
+#>  number of ML clusters:  10
+#>  confidence interval:    8-12
+#> 
+#>  number of ML entities:  12
+#>  confidence interval:    9-15
+#> 
+#>  threshold time: -0.006232079
+
+plot(fullgmyc)
+```
+
+<img src="man/figures/README-example2-1.png" width="100%" /><img src="man/figures/README-example2-2.png" width="100%" /><img src="man/figures/README-example2-3.png" width="100%" />
+
+3)  GMYC estimates 12 (9-15) species. Next, use bGMYC to implement a
+    full Bayesian GMYC analysis:
 
 ``` r
 library(bGMYC)
-#> Loading required package: ape
 #> 
 #> Attaching package: 'bGMYC'
 #> The following object is masked from 'package:sGMYC':
 #> 
 #>     spec.probmat
 
-fullgmyc<-bgmyc.singlephy(hypotree, mcmc=10000, burnin=1000, thinning=100)
+fullbgmyc<-bgmyc.singlephy(hypotree, mcmc=10000, burnin=1000, thinning=100)
 #> You are running bGMYC on a single phylogenetic tree.
 #> This tree contains  58  tips.
 #> The Yule process rate change parameter has a uniform prior ranging from  0  to  2 .
@@ -82,60 +114,58 @@ fullgmyc<-bgmyc.singlephy(hypotree, mcmc=10000, burnin=1000, thinning=100)
 #> 100 % 
 #> acceptance rates 
 #>  py pc th 
-#>  0.8013 0.7425 0.3412
+#>  0.8171 0.7658 0.341
 
 #Calculate matrix of conspecificity probabilities
-fullgmyc.probmat<-bGMYC::spec.probmat(fullgmyc)
+fullbgmyc.probmat<-bGMYC::spec.probmat(fullbgmyc)
 
 # Calculate a point estimate of the number of species
-length(bgmyc.point(fullgmyc.probmat,0.05))
+length(bgmyc.point(fullbgmyc.probmat,0.05))
 #> [1] 8
 ```
 
-3)  Based on cutoff value of PP=0.05, bGMYC estimates 8 species; next,
-    we can use a heatmap plot to display the probabilities of
-    conspecificity:
+4)  Based on cutoff value of PP=0.05, bGMYC estimates 8 species; use a
+    heatmap plot to display the probabilities of conspecificity:
 
 ``` r
 #Plot heatmap of conspecificity probabilities
-plot.bgmycprobmat(fullgmyc.probmat,hypotree)
+plot.bgmycprobmat(fullbgmyc.probmat,hypotree)
 ```
 
-<img src="man/figures/README-example3-1.png" width="100%" />
+<img src="man/figures/README-example4-1.png" width="100%" />
 
-4)  Now, let’s do subsampling with sGMYC using two samples from each of
-    the species originally estimated with the splits package:
+5)  In sGMYC, subsample two sequences from each of the species
+    originally estimated with the full GMYC:
 
 ``` r
-myres<-sGMYC(hypotree,subsamp=2,nreps=100)
+subgmyc<-sGMYC(hypotree,subsamp=2,nreps=100)
 #> Subsampling of tree 1, Done!
 #> 
 #>  Number of species in full analysis vs. after subsampling 
 #>        full_GMYC min_sGMYC max_sGMYC mean_sGMYC sd_sGMYC #reps #subsamp per sp
-#> Tree 1        12         2        11       2.09      0.9   100               2
+#> Tree 1        12         2         2          2        0   100               2
 #> 
 #>  Number of species vs. number of subsampling replicates 
 #> $`Tree 1`
 #>   #species #reps
-#> 1        2    99
-#> 2       11     1
+#> 1        2   100
 ```
 
-5)  sGMYC estimates 2 species across all 100 subsampling replicates. We
+6)  sGMYC estimates 2 species across all 100 subsampling replicates. We
     can also plot a heatmap that summarizes the variation in species
     limits based on subsampling:
 
 ``` r
 #Calculate matrix of conspecificity probabilities
 
-myprobmat<-sGMYC::spec.probmat(myres)
+subgmyc.probmat<-sGMYC::spec.probmat(subgmyc)
 
 #Plot heatmap of conspecificity probabilities
 
-plot.bgmycprobmat(myprobmat,hypotree)
+plot.bgmycprobmat(subgmyc.probmat,hypotree)
 ```
 
-<img src="man/figures/README-example5-1.png" width="100%" />
+<img src="man/figures/README-example6-1.png" width="100%" />
 
 ``` r
 #Species delimitation with subsampling using multiple trees and computer cores

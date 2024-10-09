@@ -3,7 +3,7 @@ Type: Package
 Title: GMYC analysis with subsampling
 Version: 0.01
 Date: 2024-02-01
-Author: Rafael Magalhães, MTT Santos & Arley Camargo
+Author: Rafael F. de Magalhães, MTT Santos & Arley Camargo
 Maintainer: Arley Camargo <arley.camargo@gmail.com>
 Depends: 
     R (>= 2.10)

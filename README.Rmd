@@ -44,46 +44,58 @@ data("hypotree")
 ape::print.phylo(hypotree)
 ```
 
-2) Next, we use bGMYC to implement a full Bayesian GMYC analysis:
+2) Run a single-threshold GMYC analysis with the splits package:
 
 ```{r example2}
+library(splits)
+
+gmyc(hypotree, quiet=TRUE)->fullgmyc
+
+summary(fullgmyc)
+
+plot(fullgmyc)
+```
+
+3) GMYC estimates 12 (9-15) species. Next, use bGMYC to implement a full Bayesian GMYC analysis:
+
+```{r example3}
 library(bGMYC)
 
-fullgmyc<-bgmyc.singlephy(hypotree, mcmc=10000, burnin=1000, thinning=100)
+fullbgmyc<-bgmyc.singlephy(hypotree, mcmc=10000, burnin=1000, thinning=100)
 
 #Calculate matrix of conspecificity probabilities
-fullgmyc.probmat<-bGMYC::spec.probmat(fullgmyc)
+fullbgmyc.probmat<-bGMYC::spec.probmat(fullbgmyc)
 
 # Calculate a point estimate of the number of species
-length(bgmyc.point(fullgmyc.probmat,0.05))
+length(bgmyc.point(fullbgmyc.probmat,0.05))
 ```
 
-3) Based on cutoff value of PP=0.05, bGMYC estimates 8 species; next, we can use a heatmap plot to display the probabilities of conspecificity:
+4) Based on cutoff value of PP=0.05, bGMYC estimates 8 species; use a heatmap plot to display the probabilities of conspecificity:
 
-``` {r example3}
+``` {r example4}
 #Plot heatmap of conspecificity probabilities
-plot.bgmycprobmat(fullgmyc.probmat,hypotree)
+plot.bgmycprobmat(fullbgmyc.probmat,hypotree)
 ```
 
-4) Now, let's do subsampling with sGMYC using two samples from each of the species originally estimated with the splits package:
-
-```{r example4}
-myres<-sGMYC(hypotree,subsamp=2,nreps=100)
-```
-
-5) sGMYC estimates 2 species across all 100 subsampling replicates. We can also plot a heatmap that summarizes the variation in species limits based on subsampling:
+5) In sGMYC, subsample two sequences from each of the species originally estimated with the full GMYC:
 
 ```{r example5}
+subgmyc<-sGMYC(hypotree,subsamp=2,nreps=100)
+```
+
+6) sGMYC estimates 2 species across all 100 subsampling replicates. We can also plot a heatmap that summarizes the variation in species limits based on subsampling:
+
+```{r example6}
 #Calculate matrix of conspecificity probabilities
 
-myprobmat<-sGMYC::spec.probmat(myres)
+subgmyc.probmat<-sGMYC::spec.probmat(subgmyc)
 
 #Plot heatmap of conspecificity probabilities
 
-plot.bgmycprobmat(myprobmat,hypotree)
+plot.bgmycprobmat(subgmyc.probmat,hypotree)
 ```
 
-```{r example6}
+```{r example7}
 #Species delimitation with subsampling using multiple trees and computer cores
 
 #Plotting heatmap of conspecificity probabilities
