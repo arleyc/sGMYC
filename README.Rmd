@@ -34,7 +34,7 @@ devtools::install_github("arleyc/sGMYC")
 ```
 ## Example: full analysis with bGMYC vs. subsampling with sGMYC
 
-1) First, let's load an example dataset (hypotree) included with the sGMYC package:
+1) Load an example dataset (hypotree) included with the sGMYC package:
 
 ```{r example1}
 library(sGMYC)
@@ -111,4 +111,4 @@ Reid NM & Carstens BC. 2012. Phylogenetic estimation error can decrease the accu
 
 ## Citation
 
-de Magalhães RF, Santos MTT & Camargo A. 2024. Subsampling GMYC (sGMYC): a new algorithmic implementation of the generalized mixed Yule-coalescent model. I Congresso Brasileiro de Biologia Evolutiva, Curitiba, Brazil.
+de Magalhães RF, Santos MTT & Camargo A. 2024. Subsampling GMYC (sGMYC): a new algorithmic implementation of the generalized mixed Yule-coalescent model. I Brazilian Congress of Evolutionary Biology, Curitiba, Brazil.

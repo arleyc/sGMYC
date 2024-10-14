@@ -26,8 +26,7 @@ devtools::install_github("arleyc/sGMYC")
 
 ## Example: full analysis with bGMYC vs. subsampling with sGMYC
 
-1)  First, let’s load an example dataset (hypotree) included with the
-    sGMYC package:
+1)  Load an example dataset (hypotree) included with the sGMYC package:
 
 ``` r
 library(sGMYC)
@@ -114,7 +113,7 @@ fullbgmyc<-bgmyc.singlephy(hypotree, mcmc=10000, burnin=1000, thinning=100)
 #> 100 % 
 #> acceptance rates 
 #>  py pc th 
-#>  0.8171 0.7658 0.341
+#>  0.8215 0.7696 0.349
 
 #Calculate matrix of conspecificity probabilities
 fullbgmyc.probmat<-bGMYC::spec.probmat(fullbgmyc)
@@ -194,5 +193,5 @@ doi: 10.1186/1471-2148-12-196.
 
 de Magalhães RF, Santos MTT & Camargo A. 2024. Subsampling GMYC (sGMYC):
 a new algorithmic implementation of the generalized mixed
-Yule-coalescent model. I Congresso Brasileiro de Biologia Evolutiva,
+Yule-coalescent model. I Brazilian Congress of Evolutionary Biology,
 Curitiba, Brazil.
